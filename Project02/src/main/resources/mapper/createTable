@@ -1,0 +1,35 @@
+create database project02;
+
+use project02;
+CREATE TABLE `MBR` (
+  `NAME` char(20) NOT NULL DEFAULT '',
+  `ID` char(30) NOT NULL DEFAULT '',
+  `PASSWORD` char(50) NOT NULL DEFAULT '',
+  `CELLNUM` char(20) NOT NULL DEFAULT '',
+  `EMAIL` char(100) NOT NULL DEFAULT '',
+  `GENDER` char(10),
+  PRIMARY KEY (`ID`),
+  KEY `NAME` (`NAME`)
+);
+
+INSERT INTO `MBR` VALUES ('testname','testid','abc1234567', '01012345678', 'test@test.com', null);
+INSERT INTO `MBR` VALUES ('testtwoname','testtwoid','abc1234567', '01087654321', 'testtwo@test.com', 'male');
+
+select * from mbr;
+
+ALTER DATABASE project02 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+
+use project02;
+CREATE TABLE `ORD` (
+  `ID` char(30) NOT NULL DEFAULT '',
+  `ORDERNO` char(12) NOT NULL DEFAULT '',
+  `PRODUCTNAME` char(100) NOT NULL DEFAULT '',
+  `ORDERDATE` datetime,
+  PRIMARY KEY (`ORDERNO`)
+);
+
+INSERT INTO `ORD` VALUES ('testid','AAAAA0000001','모링가바디워시', sysdate());
+INSERT INTO `ORD` VALUES ('testid','AAAAA0000002','자몽핸드크림', sysdate());
+INSERT INTO `ORD` VALUES ('testtwoid','AAAAA0000003','허니바디로션', sysdate());
+
+select * from ORD;

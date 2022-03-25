@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+
+	<insert id="insert" parameterType="hashMap">
+		INSERT INTO project02.mbr(
+			NAME,
+			ID,
+			PASSWORD,
+			CELLNUM,
+			EMAIL,
+			GENDER
+		) VALUES (
+			#{name},
+			#{id},
+			HEX(AES_ENCRYPT(#{password},#{id})),
+			<!-- #{password}, -->
+			#{cellNum},
+			#{email},
+			#{gender}
+		)
+	</insert>
+	
+	<select id="select" parameterType="String" resultType="hashMap">
+		SELECT	
+			NAME,
+			ID,
+			cast(AES_DECRYPT(UNHEX(PASSWORD), #{mbrId}) as char(100)) AS PASSWORD,
+			<!-- PASSWORD, -->
+			CELLNUM,
+			EMAIL,
+			GENDER,
+			AUTH
+		FROM project02.mbr
+		WHERE ID = #{mbrId}
+	</select>
+	
+	<select id="idChk" parameterType="String" resultType="String">
+		SELECT 
+			ID 
+		FROM project02.mbr
+		WHERE ID = #{id}
+	</select>
+	
+	<select id="login" parameterType="hashMap" resultType="String">
+		SELECT 
+			ID 
+		FROM project02.mbr
+		WHERE ID = #{id} AND PASSWORD = HEX(AES_ENCRYPT(#{password},#{id})) <!-- #{password} -->
+	</select>
+	
+	<select id="selectOrdList" parameterType="String" resultType="hashMap">
+		SELECT
+			ID,
+			ORDERNO,
+			PRODUCTNAME,
+			ORDERDATE
+		FROM project02.ord
+		WHERE ID = #{id}
+	</select>
+	
+	<select id="searchList" parameterType="hashMap" resultType="hashMap">
+		SELECT
+			A.ID,
+		    B.NAME,
+		    B.EMAIL,
+		    A.ORDERNO,
+		    A.PRODUCTNAME,
+		    A.ORDERDATE
+		FROM (
+			SELECT
+				ID,
+				ORDERNO,
+				PRODUCTNAME,
+				ORDERDATE
+			FROM project02.ord
+			WHERE (ID, ORDERDATE) IN (SELECT ID, MAX(ORDERDATE) AS ORDERDATE FROM project02.ord group by ID)
+		) A, project02.mbr B
+		WHERE A.ID = B.ID
+		<if test="nameSearch != null">AND B.NAME LIKE CONCAT('%',#{nameSearch},'%')</if>
+		<if test="emailSearch != null">AND B.EMAIL LIKE CONCAT('%',#{emailSearch},'%')</if>
+	</select>
+</mapper>

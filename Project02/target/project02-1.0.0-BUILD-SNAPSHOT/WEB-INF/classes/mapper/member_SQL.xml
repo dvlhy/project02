@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+
+	<insert id="insert" parameterType="hashMap">
+		INSERT INTO project02.mbr(
+			NAME,
+			ID,
+			PASSWORD,
+			CELLNUM,
+			EMAIL,
+			GENDER
+		) VALUES (
+			#{name},
+			#{id},
+			<!-- HEX(AES_ENCRYPT(#{password},#{id})), -->
+			#{password},
+			#{cellNum},
+			#{email},
+			#{gender}
+		)
+	</insert>
+	
+	<select id="select" parameterType="hashMap" resultType="hashMap">
+		SELECT	
+			NAME,
+			ID,
+			<!-- AES_DECRYPT(unhex(PASSWORD), ID), -->
+			PASSWORD,
+			CELLNUM,
+			EMAIL,
+			GENDER
+		FROM project02.mbr
+		WHERE ID = #{mbrId}
+	</select>
+	
+	<select id="idChk" parameterType="String" resultType="String">
+		SELECT 
+			ID 
+		FROM project02.mbr
+		WHERE ID = #{id}
+	</select>
+	
+	<select id="login" parameterType="hashMap" resultType="String">
+		SELECT 
+			ID 
+		FROM project02.mbr
+		WHERE ID = #{id} AND PASSWORD = #{password} <!-- HEX(AES_ENCRYPT(#{password},#{id})) -->
+	</select>
+	
+</mapper>
