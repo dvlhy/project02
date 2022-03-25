@@ -23,7 +23,7 @@ import com.haeyeong.project02.util.JwtService;
 
 @Controller
 @RequestMapping("member")
-public class MemberController {
+public class MemberController { 
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
