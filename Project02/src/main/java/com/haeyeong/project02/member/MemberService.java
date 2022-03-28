@@ -17,5 +17,4 @@ public interface MemberService {
 
 	List<Map<String, Object>> searchList(Map<String, Object> map);
 
-
 }
