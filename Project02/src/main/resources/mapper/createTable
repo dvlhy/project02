@@ -8,12 +8,14 @@ CREATE TABLE `MBR` (
   `CELLNUM` char(20) NOT NULL DEFAULT '',
   `EMAIL` char(100) NOT NULL DEFAULT '',
   `GENDER` char(10),
+  `AUTH` char(100) NOT NULL DEFAULT 'user',
   PRIMARY KEY (`ID`),
   KEY `NAME` (`NAME`)
 );
 
 INSERT INTO `MBR` VALUES ('testname','testid','abc1234567', '01012345678', 'test@test.com', null);
 INSERT INTO `MBR` VALUES ('testtwoname','testtwoid','abc1234567', '01087654321', 'testtwo@test.com', 'male');
+INSERT INTO `MBR` VALUES ('admintest','adminid','abc1234567', '01011112222', 'admin@test.com', 'female', 'admin');
 
 select * from mbr;
 
